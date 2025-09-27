@@ -8,7 +8,7 @@ public final class PNMultithreadVisitor {
         queue.qualityOfService = .userInitiated
         queue.maxConcurrentOperationCount = graph.nodes.count - 1
     }
-    
+
     public func visit(completion: @Sendable @escaping (PNNode) -> Void) {
         guard let first = graph.nodes.first else {
             return

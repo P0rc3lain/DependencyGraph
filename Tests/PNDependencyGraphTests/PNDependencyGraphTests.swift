@@ -1,5 +1,5 @@
-import Testing
 @testable import PNDependencyGraph
+import Testing
 
 @Test("Many dependencies")
 func manyDeps() async throws {
@@ -25,7 +25,7 @@ func emptyGraph() async throws {
     let graph = DependencyGraph()
 
     let compiled = try graph.compile()
-    
+
     #expect(compiled.nodes == [])
 }
 
@@ -33,9 +33,9 @@ func emptyGraph() async throws {
 func singleNode() async throws {
     let graph = DependencyGraph()
     let a = graph.addNode("A")
-    
+
     let compiled = try graph.compile()
-    
+
     #expect(compiled.nodes == [a])
 }
 
@@ -45,11 +45,11 @@ func cycle() async throws {
     let a = graph.addNode("A")
     let b = graph.addNode("B")
     let c = graph.addNode("C")
-    
+
     a.addDependency(node: c)
     c.addDependency(node: b)
     b.addDependency(node: a)
-    
+
     #expect(throws: CompilationError.self) {
         _ = try graph.compile()
     }

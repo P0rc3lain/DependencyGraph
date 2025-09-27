@@ -3,7 +3,7 @@ public final class PNSingleThreadVisitor {
     public init(graph: PNCompiledGraph) {
         self.graph = graph
     }
-    
+
     public func visit(completion: (PNNode) -> Void) {
         for node in graph.nodes {
             completion(node)
