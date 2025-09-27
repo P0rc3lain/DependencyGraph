@@ -1,14 +1,14 @@
 import Foundation
 
-final class PNMultithreadVisitor {
-    private let graph: CompiledGraph
+public final class PNMultithreadVisitor {
+    private let graph: PNCompiledGraph
     private let queue = OperationQueue()
-    init(graph newGraph: CompiledGraph) {
+    public init(graph newGraph: PNCompiledGraph) {
         graph = newGraph
         queue.maxConcurrentOperationCount = graph.nodes.count
     }
     
-    func visit(completion: @escaping @Sendable (PNNode) -> Void) {
+    public func visit(completion: @escaping @Sendable (PNNode) -> Void) {
         for node in graph.nodes {
             queue.addOperation {
                 completion(node)

@@ -1,31 +1,35 @@
 import Foundation
 
-enum CompilationError: Error {
+public enum PNCompilationError: Error {
     case cycle
 }
 
-final class DependencyGraph {
+public final class PNGraph {
     private var nodes: [String: PNNode] = [:]
     
-    func addNode(_ id: String) -> PNNode {
-        if let existing = nodes[id] { return existing }
-        let node = PNNode(identifier: id)
-        nodes[id] = node
+    public func add(identifier: String) -> PNNode {
+        if let existing = nodes[identifier] { return existing }
+        let node = PNNode(identifier: identifier)
+        nodes[identifier] = node
         return node
     }
     
-    func getNode(_ id: String) -> PNNode? {
-        nodes[id]
+    public init() {
+        
     }
     
-    func compile() throws -> CompiledGraph {
+    public func get(identifier: String) -> PNNode? {
+        nodes[identifier]
+    }
+    
+    public func compile() throws -> PNCompiledGraph {
         var visited: Set<String> = []
         var visiting: Set<String> = []
         var result: [PNNode] = []
         
         func visit(_ node: PNNode) throws {
             if visiting.contains(node.identifier) {
-                throw CompilationError.cycle
+                throw PNCompilationError.cycle
             }
             guard !visited.contains(node.identifier) else { return }
             
@@ -43,6 +47,6 @@ final class DependencyGraph {
             try visit(node)
         }
         
-        return CompiledGraph(nodes: result)
+        return PNCompiledGraph(nodes: result)
     }
 }

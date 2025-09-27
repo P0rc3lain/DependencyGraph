@@ -1,10 +1,10 @@
-final class PNSingleThreadVisitor {
-    private let graph: CompiledGraph
-    init(graph: CompiledGraph) {
+public final class PNSingleThreadVisitor {
+    private let graph: PNCompiledGraph
+    public init(graph: PNCompiledGraph) {
         self.graph = graph
     }
     
-    func visit(completion: (PNNode) -> Void) {
+    public func visit(completion: (PNNode) -> Void) {
         for node in graph.nodes {
             completion(node)
         }

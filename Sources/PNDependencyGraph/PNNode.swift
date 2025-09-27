@@ -1,12 +1,12 @@
 import Foundation
 
-final class PNNode: @unchecked Sendable, Equatable {
-    static func == (lhs: PNNode, rhs: PNNode) -> Bool {
+public final class PNNode: @unchecked Sendable, Equatable {
+    public static func == (lhs: PNNode, rhs: PNNode) -> Bool {
         return lhs === rhs
     }
     
-    let identifier: String
-    var dependencies: [PNNode] {
+    public let identifier: String
+    public var dependencies: [PNNode] {
         synchronization.withLock {
             unsafeDependencies
         }
@@ -18,7 +18,7 @@ final class PNNode: @unchecked Sendable, Equatable {
         identifier = newIdentifier
     }
     
-    func addDependency(node: PNNode) {
+    public func addDependency(node: PNNode) {
         synchronization.withLock {
             unsafeDependencies.append(node)
         }
