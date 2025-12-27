@@ -1,0 +1,73 @@
+---
+name: Archive
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+  documentation:
+    needs: tests
+    runs-on: macOS-latest
+    steps:
+      - name: Check Out Sources
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build the project
+        run: swift package generate-documentation -o /tmp/PNDependencyGraph.doccarchive
+      - name: Archive the documentation directory
+        working-directory: /tmp
+        run: tar -czf PNDependencyGraph.doccarchive.tar.gz PNDependencyGraph.doccarchive
+      - name: Upload the documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: PNDependencyGraph.doccarchive.tar.gz
+          path: /tmp/PNDependencyGraph.doccarchive.tar.gz
+  deploy:
+    needs: documentation
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Setup pages
+        uses: actions/configure-pages@v2
+      - name: Download documentation
+        uses: actions/download-artifact@v4
+        with:
+          name: PNDependencyGraph.doccarchive.tar.gz
+      - name: Unpack the documentation
+        run: tar -xf PNDependencyGraph.doccarchive.tar.gz
+      - name: Prepare documentation for hosting
+        run: $(xcodebuild -find docc) process-archive
+                                      transform-for-static-hosting
+                                      ./PNDependencyGraph.doccarchive
+                                      --hosting-base-path DependencyGraph
+                                      --output-path docs
+      - name: Redirect to the actual documentation
+        run: cp -f Auxilary/index.html docs/index.html
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'docs'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+...
