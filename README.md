@@ -1,6 +1,6 @@
 # DependencyGraph
 
-A lightweight, type‑safe library for modeling and resolving directed acyclic graphs (DAGs) of dependencies.  
+A lightweight, type‑safe library for modeling and resolving directed acyclic graphs (DAGs) of dependencies.
 It provides a simple API to define nodes, establish relationships, and automatically compute an execution order that respects all dependencies.
 
 ---
@@ -48,9 +48,9 @@ swift build
 ### Xcode
 
 1. Open your project.
-2. Choose **File → Swift Packages → Add Package Dependency…**
-3. Enter the URL `https://github.com/P0rc3lain/DependencyGraph.git` and select the desired version.
-4. Add the library target to your target’s **Dependencies**.
+1. Choose **File → Swift Packages → Add Package Dependency…**.
+1. Enter the URL `https://github.com/P0rc3lain/DependencyGraph.git` and select the desired version.
+1. Add the library target to your target’s **Dependencies**.
 
 ---
 
@@ -60,23 +60,23 @@ swift build
 import DependencyGraph
 
 // 1️⃣ Define nodes (any hashable type)
-let a = Node(id: "A")
-let b = Node(id: "B")
-let c = Node(id: "C")
+let graph = PNGraph()
+let a = graph.add(identifier: "A")
+let b = graph.add(identifier: "B")
+let c = graph.add(identifier: "C")
+let d = graph.add(identifier: "D")
+let e = graph.add(identifier: "E")
 
 // 2️⃣ Build the graph
-let graph = Graph()
-graph.add(node: a)
-graph.add(node: b)
-graph.add(node: c)
-
-graph.addDependency(source: a, destination: b) // A → B
-graph.addDependency(source: b, destination: c) // B → C
-graph.addDependency(source: a, destination: c) // A → C (optional)
+b.addDependency(node: a)
+c.addDependency(node: b)
+d.addDependency(node: b)
+e.addDependency(node: a)
+b.addDependency(node: e)
 
 // 3️⃣ Resolve execution order
-if let order = graph.resolve() {
-    print("Execution order: \(order.map { $0.id })")
+if let order = try? graph.compile() {
+    print("Execution order: \(order.map { $0 })")
 } else {
     print("Graph contains a cycle!")
 }

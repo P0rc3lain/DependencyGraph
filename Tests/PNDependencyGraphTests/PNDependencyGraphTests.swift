@@ -3,12 +3,12 @@ import Testing
 
 @Test("Many dependencies")
 func manyDeps() async throws {
-    let graph = DependencyGraph()
-    let a = graph.addNode("A")
-    let b = graph.addNode("B")
-    let c = graph.addNode("C")
-    let d = graph.addNode("D")
-    let e = graph.addNode("E")
+    let graph = PNGraph()
+    let a = graph.add(identifier: "A")
+    let b = graph.add(identifier: "B")
+    let c = graph.add(identifier: "C")
+    let d = graph.add(identifier: "D")
+    let e = graph.add(identifier: "E")
 
     b.addDependency(node: a)
     c.addDependency(node: b)
@@ -22,7 +22,7 @@ func manyDeps() async throws {
 
 @Test("Empty graph")
 func emptyGraph() async throws {
-    let graph = DependencyGraph()
+    let graph = PNGraph()
 
     let compiled = try graph.compile()
 
@@ -31,8 +31,8 @@ func emptyGraph() async throws {
 
 @Test("Single node graph")
 func singleNode() async throws {
-    let graph = DependencyGraph()
-    let a = graph.addNode("A")
+    let graph = PNGraph()
+    let a = graph.add(identifier: "A")
 
     let compiled = try graph.compile()
 
@@ -41,16 +41,16 @@ func singleNode() async throws {
 
 @Test("Cycle")
 func cycle() async throws {
-    let graph = DependencyGraph()
-    let a = graph.addNode("A")
-    let b = graph.addNode("B")
-    let c = graph.addNode("C")
+    let graph = PNGraph()
+    let a = graph.add(identifier: "A")
+    let b = graph.add(identifier: "B")
+    let c = graph.add(identifier: "C")
 
     a.addDependency(node: c)
     c.addDependency(node: b)
     b.addDependency(node: a)
 
-    #expect(throws: CompilationError.self) {
+    #expect(throws: PNCompilationError.self) {
         _ = try graph.compile()
     }
 }
