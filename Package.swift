@@ -19,7 +19,20 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "PNDependencyGraph"
+            name: "PNDependencyGraph",
+            plugins: [
+                .plugin(
+                    name: "SwiftDocCPlugin",
+                    package: "swift-docc-plugin"
+                )
+            ]
+        ),
+        // Empty target that builds the DocC catalog at /SwiftDocCPluginDocumentation/SwiftDocCPlugin.docc.
+        // The SwiftDocCPlugin catalog includes high-level, user-facing documentation about using
+        // the Swift-DocC plugin from the command-line.
+        .target(
+            name: "PNDependencyGraphDocumentation",
+            path: "Sources/PNDependencyGraphDocumentation"
         ),
         .testTarget(
             name: "PNDependencyGraphTests",
