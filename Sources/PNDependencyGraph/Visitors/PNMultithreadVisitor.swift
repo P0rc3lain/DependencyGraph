@@ -16,7 +16,7 @@ import Foundation
 public final class PNMultithreadVisitor {
     private let graph: PNCompiledGraph
     private let queue = OperationQueue()
-    
+
     /// Initializes a new instance of `PNMultithreadVisitor` with the specified graph.
     ///
     /// - Parameter newGraph: The compiled dependency graph to visit.

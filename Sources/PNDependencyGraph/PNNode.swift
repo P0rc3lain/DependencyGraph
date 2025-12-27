@@ -26,7 +26,7 @@ public final class PNNode: @unchecked Sendable, Equatable {
 
     /// A unique identifier for the node.
     public let identifier: String
-    
+
     /// The dependencies of this node.
     ///
     /// This property returns an array of nodes that this node depends on.
@@ -36,12 +36,12 @@ public final class PNNode: @unchecked Sendable, Equatable {
             unsafeDependencies
         }
     }
-    
+
     /// The internal storage for dependencies.
     ///
     /// This is used internally to store the actual dependencies in a thread-safe manner.
     private var unsafeDependencies: [PNNode] = []
-    
+
     /// A lock used to synchronize access to dependencies.
     ///
     /// This ensures that the `dependencies` property can be safely accessed from multiple threads.

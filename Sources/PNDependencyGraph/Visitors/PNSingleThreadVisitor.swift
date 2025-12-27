@@ -13,7 +13,7 @@ public final class PNSingleThreadVisitor {
     /// }
     /// ```
     private let graph: PNCompiledGraph
-    
+
     /// Initializes a new instance of `PNSingleThreadVisitor` with the specified graph.
     ///
     /// - Parameter graph: The compiled dependency graph to visit.
