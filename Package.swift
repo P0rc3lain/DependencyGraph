@@ -13,7 +13,6 @@ let package = Package(
         )
     ],
     dependencies: [
-        // other dependencies
         .package(url: "https://github.com/swiftlang/swift-docc-plugin", from: "1.0.0")
     ],
     targets: [
